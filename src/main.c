@@ -11,13 +11,33 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <curses.h>
+#include <game.h>
 
-int		main(int argc, char *argv[])
+void	ft_exit()
 {
-	(void)argc;
-	(void)argv;
+	endwin();/*Curses close*/
+	ft_putendl_fd("exit", 2);
+	exit(0);
+}
 
-	printf("Coucou\n");
+int		main(void)
+{
+//	WINDOW	*win;
+	int		ch;
+
+	initscr();/*Curses init*/
+	keypad(stdscr, true);
+
+	while(42)
+	{
+		ch = getch();
+		if (ch == 27)
+			ft_exit();
+		mvprintw(10, 10,"|%d|", ch);
+	}
+
+	endwin();/*Curses close*/
 	return (0);
 }

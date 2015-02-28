@@ -126,11 +126,11 @@ void	move_up(int tab[4][4])
 	{
 		y = -1;
 		while (++y < 4)
-			if (y != 3 && tab[y + 1][x] == 0 && tab[y + 2][x] == 0 && tab[y][x] == tab[y + 3][x])
+			if (y < 1 && tab[y + 1][x] == 0 && tab[y + 2][x] == 0 && tab[y][x] == tab[y + 3][x])
 				tab[y][x] *= 2, tab[y + 3][x] = 0;
 			else if (y < 2 && tab[y + 1][x] == 0 && tab[y][x] == tab[y + 2][x])
 				tab[y][x] *= 2, tab[y + 2][x] = 0;
-			else if (y < 1 && tab[y][x] == tab[y + 1][x])
+			else if (y != 3 && tab[y][x] == tab[y + 1][x])
 				tab[y][x] *= 2, tab[y + 1][x] = 0;
 		move_u(tab, x), move_u(tab, x), move_u(tab, x);
 	}
@@ -240,22 +240,6 @@ void	print_tab(int tab[4][4], t_win *win)
 	}
 }
 
-void	grid_responsive(WINDOW *scr, t_win *win)
-{
-	win->lastx = win->mx;
-	win->lasty = win->my;
-	getmaxyx(scr, win->my, win->mx);
-	box(scr, 0, 0);
-	if(win->lastx != win->mx || win->lasty != win->my)
-		wclear(scr);
-	mvhline((win->my / 4) * 1, 1, '-', (win->mx - 2));
-	mvhline((win->my / 4) * 2, 1, '-', (win->mx - 2));
-	mvhline((win->my / 4) * 3, 1, '-', (win->mx - 2));
-	mvvline(1, (win->mx / 4) * 1, '|', (win->my - 2));
-	mvvline(1, (win->mx / 4) * 2, '|', (win->my - 2));
-	mvvline(1, (win->mx / 4) * 3, '|', (win->my - 2));
-}
-
 int		rand_number(void)
 {
 	int		nb;
@@ -265,23 +249,23 @@ int		rand_number(void)
 	return (nb);
 }
 
-void	pop_num(int tab[4][4])
-{
-	int		x;
-	int		y;
-
-	srand(time(NULL));
-	while (42)
-	{
-		x = rand() % 4;
-		y = rand() % 4;
-		if (!tab[y][x])
-		{
-			tab[y][x] = rand_number();
-			return ;
-		}
-	}
-}
+//void	pop_num(int tab[4][4])
+//{
+//	int		x;
+//	int		y;
+//
+//	srand(time(NULL));
+//	while (42)
+//	{
+//		x = rand() % 4;
+//		y = rand() % 4;
+//		if (!tab[y][x])
+//		{
+//			tab[y][x] = rand_number();
+//			return ;
+//		}
+//	}
+//}
 
 void	pop_number(int tab[4][4])
 {
@@ -333,9 +317,50 @@ void	grid_init(int tab[4][4])
 	}
 }
 
+void draw_menubar(WINDOW *menubar)
+{
+    wbkgd(menubar,COLOR_PAIR(2));
+    waddstr(menubar,"Menu1");
+    wattron(menubar,COLOR_PAIR(3));
+    waddstr(menubar,"(F1)");
+    wattroff(menubar,COLOR_PAIR(3));
+    wmove(menubar,0,20);
+    waddstr(menubar,"Menu2");
+    wattron(menubar,COLOR_PAIR(3));
+    waddstr(menubar,"(F2)");
+    wattroff(menubar,COLOR_PAIR(3));
+}
+
+void	init_curses()
+{
+	initscr();
+	start_color();
+	keypad(stdscr, true);
+	init_pair(1,COLOR_WHITE,COLOR_BLUE);
+	init_pair(2,COLOR_BLUE,COLOR_WHITE);
+	init_pair(3,COLOR_RED,COLOR_WHITE);
+	curs_set(0);
+}
+
+void	grid_responsive(WINDOW *scr, t_win *win)
+{
+	win->lastx = win->mx;
+	win->lasty = win->my;
+	getmaxyx(scr, win->my, win->mx);
+	box(scr, 0, 0);
+	if(win->lastx != win->mx || win->lasty != win->my)
+		wclear(scr);
+	mvhline((win->my / 4) * 1, 0, '-', (win->mx - 2));
+	mvhline((win->my / 4) * 2, 1, '-', (win->mx - 2));
+	mvhline((win->my / 4) * 3, 1, '-', (win->mx - 2));
+	mvvline(1, (win->mx / 4) * 1, '|', (win->my - 2));
+	mvvline(1, (win->mx / 4) * 2, '|', (win->my - 2));
+	mvvline(1, (win->mx / 4) * 3, '|', (win->my - 2));
+}
+
 int		main(void)
 {
-//	WINDOW	*win;
+//	WINDOW	*menubar;
 	int		ch;
 	t_win	win;
 
@@ -343,8 +368,9 @@ int		main(void)
 							{0, 0, 0, 0},
 							{0, 0, 0, 0},
 							{0, 0, 0, 0}};
-	initscr();
-	keypad(stdscr, true);
+
+	init_curses();
+//	menubar=subwin(stdscr,1,80,0,0);
 	grid_init(tab);
 //	signal(SIGINT, SIG_IGN);
 	getmaxyx(stdscr, win.my, win.mx);

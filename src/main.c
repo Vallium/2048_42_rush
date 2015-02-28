@@ -310,8 +310,6 @@ void	pop_number(int tab[4][4])
 			}
 			y++;
 		}
-		if (!rd)
-			ft_exit();
 	}
 }
 

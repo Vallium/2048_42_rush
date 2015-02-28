@@ -209,12 +209,10 @@ int		grid_cmp(int tab[4][4], int tab2[4][4])
 int		grid_move(int tab[4][4], void (*f)(int[4][4]))
 {
 	int		oldtab[4][4];
-	int		ret;
 
 	grid_cpy(tab, oldtab);
 	f(tab);
-	ret = grid_cmp(tab, oldtab);
-	return (ret);
+	return (grid_cmp(tab, oldtab) ? 0 : 1);
 }
 
 void	print_tab(int tab[4][4], t_win *win)
@@ -361,13 +359,25 @@ int		main(void)
 		if (ch == 27)
 			ft_exit();
 		else if (ch == 259)
-			move_up(tab), pop_number(tab);
-		else if (ch == 258 && grid_move(tab, move_down))
-			pop_number(tab);
+		{
+			if (grid_move(tab, move_up))
+				pop_number(tab);
+		}
+		else if (ch == 258)
+		{
+			if (grid_move(tab, move_down))
+				pop_number(tab);
+		}
 		else if (ch == 261)
-			move_right(tab), pop_number(tab);
+		{
+			if (grid_move(tab, move_right))
+				pop_number(tab);
+		}
 		else if (ch == 260)
-			move_left(tab), pop_number(tab);
+		{
+			if (grid_move(tab, move_left))
+				pop_number(tab);
+		}
 		wclear(stdscr);
 		refresh();
 	}

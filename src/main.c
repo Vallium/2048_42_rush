@@ -81,21 +81,18 @@ void	move_left(int tab[4][4])
 	int x;
 	int y;
 
-	y = 0;
-	while (y < 4)
+	y = -1;
+	while (++y < 4)
 	{
-		x = 0;
-		while (x < 4)
-		{
-			if (x != 3 && tab[y][x] == tab[y][x + 1])
-			{
-				tab[y][x] *= 2;
-				tab[y][x + 1] = 0;
-			}
-			x++;
-		}
+		x = -1;
+		while (++x < 4)
+			if (x < 1 && tab[y][x + 1] == 0 && tab[y][x + 2] == 0 && tab[y][x] == tab[y][x + 3])
+				tab[y][x] *= 2, tab[y][x + 3] = 0;
+			else if (x < 2 && tab[y][x + 1] == 0 && tab[y][x] == tab[y][x + 2])
+				tab[y][x] *= 2, tab[y][x + 2] = 0;
+			else if (x != 3 && tab[y][x] == tab[y][x + 1])
+				tab[y][x] *= 2, tab[y][x + 1] = 0;
 		move_l(tab, y), move_l(tab, y), move_l(tab, y);
-		y++;
 	}
 }
 
@@ -104,21 +101,18 @@ void	move_right(int tab[4][4])
 	int x;
 	int y;
 
-	y = 0;
-	while (y < 4)
+	y = -1;
+	while (++y < 4)
 	{
 		x = 4;
-		while (x > 0)
-		{
-			if (x != 0 && tab[y][x] == tab[y][x - 1])
-			{
-				tab[y][x] *= 2;
-				tab[y][x - 1] = 0;
-			}
-			move_r(tab, y), move_r(tab, y), move_r(tab, y);
-			x--;
-		}
-		y++;
+		while (--x > -1)
+			if (x > 2 && tab[y][x - 1] == 0 && tab[y][x - 2] == 0 && tab[y][x] == tab[y][x - 3])
+				tab[y][x] *= 2, tab[y][x - 3] = 0;
+			else if (x > 1 && tab[y][x - 1] == 0 && tab[y][x] == tab[y][x - 2])
+				tab[y][x] *= 2, tab[y][x - 2] = 0;
+			else if (x != 0 && tab[y][x] == tab[y][x - 1])
+				tab[y][x] *= 2, tab[y][x - 1] = 0;
+		move_r(tab, y), move_r(tab, y), move_r(tab, y);
 	}
 }
 
@@ -127,45 +121,100 @@ void	move_up(int tab[4][4])
 	int x;
 	int y;
 
-	x = 0;
-	while (x < 4)
+	x = -1;
+	while (++x < 4)
 	{
-		y = 0;
-		while (y < 4)
-		{
-			if (y != 3 && tab[y][x] == tab[y + 1][x])
-			{
-				tab[y][x] *= 2;
-				tab[y + 1][x] = 0;
-			}
-			y++;
-		}
+		y = -1;
+		while (++y < 4)
+			if (y != 3 && tab[y + 1][x] == 0 && tab[y + 2][x] == 0 && tab[y][x] == tab[y + 3][x])
+				tab[y][x] *= 2, tab[y + 3][x] = 0;
+			else if (y < 2 && tab[y + 1][x] == 0 && tab[y][x] == tab[y + 2][x])
+				tab[y][x] *= 2, tab[y + 2][x] = 0;
+			else if (y < 1 && tab[y][x] == tab[y + 1][x])
+				tab[y][x] *= 2, tab[y + 1][x] = 0;
 		move_u(tab, x), move_u(tab, x), move_u(tab, x);
-		x++;
 	}
 }
 
 void	move_down(int tab[4][4])
 {
-	int x;
-	int y;
+	int		x;
+	int		y;
 
 	x = 0;
 	while (x < 4)
 	{
 		y = 4;
-		while (y > 0)
+		while (--y > -1)
 		{
-			if (y != 0 && tab[y][x] == tab[y - 1][x])
+			if (y > 2 && tab[y - 1][x] == 0 && tab[y - 2][x] == 0 && tab[y][x] == tab[y - 3][x])
+			{
+				tab[y][x] *= 2;
+				tab[y - 3][x] = 0;
+			}
+			else if (y > 1 && tab[y - 1][x] == 0 && tab[y][x] == tab[y - 2][x])
+			{
+				tab[y][x] *= 2;
+				tab[y - 2][x] = 0;
+			}
+			else if (y != 0 && tab[y][x] == tab[y - 1][x])
 			{
 				tab[y][x] *= 2;
 				tab[y - 1][x] = 0;
 			}
-			move_d(tab, x), move_d(tab, x), move_d(tab, x);
-			y--;
 		}
+		move_d(tab, x), move_d(tab, x), move_d(tab, x);
 		x++;
 	}
+}
+
+void	grid_cpy(int src[4][4], int dst[4][4])
+{
+	int		x;
+	int		y;
+
+	y = 0;
+	while (y < 4)
+	{
+		x = 0;
+		while (x < 4)
+		{
+			dst[y][x] = src[y][x];
+			x++;
+		}
+		y++;
+	}
+}
+
+int		grid_cmp(int tab[4][4], int tab2[4][4])
+{
+	int		x;
+	int		y;
+
+	y = 0;
+	while (y < 4)
+	{
+		x = 0;
+		while (x < 4)
+		{
+			if (tab[y][x] != tab2[y][x])
+				return (0);
+			x++;
+		}
+		y++;
+	}
+	return (1);
+}
+
+int		grid_move(int tab[4][4], void (*f)(int[4][4]))
+{
+	int		oldtab[4][4];
+	int		ret;
+
+	grid_cpy(tab, oldtab);
+	f(tab);
+	ret = grid_cmp(tab, oldtab);
+	return (ret);
 }
 
 void	print_tab(int tab[4][4], t_win *win)
@@ -218,7 +267,7 @@ int		rand_number(void)
 	return (nb);
 }
 
-void	pop_number(int tab[4][4])
+void	pop_num(int tab[4][4])
 {
 	int		x;
 	int		y;
@@ -233,6 +282,38 @@ void	pop_number(int tab[4][4])
 			tab[y][x] = rand_number();
 			return ;
 		}
+	}
+}
+
+void	pop_number(int tab[4][4])
+{
+	int		x;
+	int		y;
+	int		rd;
+
+	srand(time(NULL));
+	rd = rand() % 20;
+	while (42)
+	{
+		y = 0;
+		while (y < 4)
+		{
+			x = 0;
+			while (x < 4)
+			{
+				if (!tab[y][x])
+					rd--;
+				if(!rd)
+				{
+					tab[y][x] = rand_number();
+					return ;
+				}
+				x++;
+			}
+			y++;
+		}
+		if (!rd)
+			ft_exit();
 	}
 }
 
@@ -266,7 +347,7 @@ int		main(void)
 							{0, 0, 0, 0},
 							{0, 0, 0, 0},
 							{0, 0, 0, 0}};
-	initscr();/*Curses init*/
+	initscr();
 	keypad(stdscr, true);
 	grid_init(tab);
 //	signal(SIGINT, SIG_IGN);
@@ -281,17 +362,16 @@ int		main(void)
 			ft_exit();
 		else if (ch == 259)
 			move_up(tab), pop_number(tab);
-		else if (ch == 258)
-			move_down(tab), pop_number(tab);
+		else if (ch == 258 && grid_move(tab, move_down))
+			pop_number(tab);
 		else if (ch == 261)
 			move_right(tab), pop_number(tab);
 		else if (ch == 260)
 			move_left(tab), pop_number(tab);
-//		mvprintw(10, 10,"|%d|", ch);
 		wclear(stdscr);
 		refresh();
 	}
 
-	endwin();/*Curses close*/
+	endwin();
 	return (0);
 }

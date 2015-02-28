@@ -15,6 +15,7 @@
 # define GAME_H
 
 #include "libft.h"
+#include <time.h>
 
 typedef struct	s_win
 {

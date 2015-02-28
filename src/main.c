@@ -183,12 +183,58 @@ void	print_tab(int tab[4][4], t_win *win)
 		px = 1;
 		while (px < 8)
 		{
-			mvprintw((win->my / 8) * py, (win->mx / 8) * px, "%d", tab[y][x]);
+			if (tab[y][x])
+				mvprintw((win->my / 8) * py, (win->mx / 8) * px, "%d", tab[y][x]);
 			px += 2;
 			x++;
 		}
 		py += 2;
 		y++;
+	}
+}
+
+void	grid_responsive(WINDOW *scr, t_win *win)
+{
+	win->lastx = win->mx;
+	win->lasty = win->my;
+	getmaxyx(scr, win->my, win->mx);
+	box(scr, 0, 0);
+	if(win->lastx != win->mx || win->lasty != win->my)
+		wclear(scr);
+	mvhline((win->my / 4) * 1, 1, '-', (win->mx - 2));
+	mvhline((win->my / 4) * 2, 1, '-', (win->mx - 2));
+	mvhline((win->my / 4) * 3, 1, '-', (win->mx - 2));
+	mvvline(1, (win->mx / 4) * 1, '|', (win->my - 2));
+	mvvline(1, (win->mx / 4) * 2, '|', (win->my - 2));
+	mvvline(1, (win->mx / 4) * 3, '|', (win->my - 2));
+}
+
+int		pop_number(void)
+{
+	int		nb;
+
+	srand(time(NULL));
+	nb = rand() % 100 >= 90 ? 4 : 2;
+	return (nb);
+}
+
+void	grid_init(int tab[4][4])
+{
+	int		i;
+	int		x;
+	int		y;
+
+	srand(time(NULL));
+	i = 0;
+	while (i < 2)
+	{
+		x = rand() % 4;
+		y = rand() % 4;
+		if (!tab[y][x])
+		{
+			tab[y][x] = pop_number();
+			i++;
+		}
 	}
 }
 
@@ -198,28 +244,18 @@ int		main(void)
 	int		ch;
 	t_win	win;
 
-	int		tab[4][4] = {	{0, 2, 2, 2},
-							{0, 2, 2, 2},
-							{0, 2, 2, 2},
-							{0, 2, 2, 2}};
+	int		tab[4][4] = {	{0, 0, 0, 0},
+							{0, 0, 0, 0},
+							{0, 0, 0, 0},
+							{0, 0, 0, 0}};
 	initscr();/*Curses init*/
 	keypad(stdscr, true);
+	grid_init(tab);
+//	signal(SIGINT, SIG_IGN);
 	getmaxyx(stdscr, win.my, win.mx);
 	while(42)
 	{
-		win.lastx = win.mx;
-		win.lasty = win.my;
-		getmaxyx(stdscr, win.my, win.mx);
-		box(stdscr, 0, 0);
-		if(win.lastx != win.mx || win.lasty != win.my)
-			wclear(stdscr);
-		mvhline((win.my / 4) * 1, 1, '-', (win.mx - 2));
-		mvhline((win.my / 4) * 2, 1, '-', (win.mx - 2));
-		mvhline((win.my / 4) * 3, 1, '-', (win.mx - 2));
-		mvvline(1, (win.mx / 4) * 1, '|', (win.my - 2));
-		mvvline(1, (win.mx / 4) * 2, '|', (win.my - 2));
-		mvvline(1, (win.mx / 4) * 3, '|', (win.my - 2));
-
+		grid_responsive(stdscr, &win);
 
 		print_tab(tab, &win);
 		ch = getch();
@@ -234,6 +270,7 @@ int		main(void)
 		else if (ch == 260)
 			move_left(tab);
 //		mvprintw(10, 10,"|%d|", ch);
+		wclear(stdscr);
 		refresh();
 	}
 

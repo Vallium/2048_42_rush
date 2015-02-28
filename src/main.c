@@ -22,23 +22,23 @@ void	ft_exit()
 	exit(0);
 }
 
-void	print_tab(char **tab)
+void	print_tab(char tab[4][4])
 {
 	int		x;
 	int		y;
 
 	x = 0;
-	while (**tab)
+	while (*tab[x])
 	{
 		y = 0;
-		while (*tab)
+		while (tab[y][x])
 		{
-			mvprintw(x * 2, y * 2, "%c", *tab);
+			mvprintw(x * 2, y * 2, "%c", tab[y][x]);
 			y++;
-			tab++;
+//			tab++;
 		}
 		x++;
-		(*tab)++;
+//		*tab++;
 	}
 }
 
@@ -46,36 +46,33 @@ int		main(void)
 {
 //	WINDOW	*win;
 	int		ch;
-	int		lastx;
-	int		lasty;
-	int		mx;
-	int		my;
+	t_win	win;
 
-//	char	tab[4][4] = {	{'.', '.', '.', '.'},
-//							{'.', '.', '4', '.'},
-//							{'2', '.', '.', '.'},
-//							{'.', '.', '.', '.'}};
+	char	tab[4][4] = {	{'.', '.', '.', '.'},
+							{'.', '.', '4', '.'},
+							{'2', '.', '.', '.'},
+							{'.', '.', '.', '.'}};
 	initscr();/*Curses init*/
 	keypad(stdscr, true);
-	getmaxyx(stdscr, my, mx);
+	getmaxyx(stdscr, win.my, win.mx);
 	while(42)
 	{
 		ch = getch();
-		lastx = mx;
-		lasty = my;
-		getmaxyx(stdscr, my, mx);
+		win.lastx = win.mx;
+		win.lasty = win.my;
+		getmaxyx(stdscr, win.my, win.mx);
 		box(stdscr, 0, '-');
-		if(lastx != mx || lasty != my)
+		if(win.lastx != win.mx || win.lasty != win.my)
 			wclear(stdscr);
-		mvhline((my / 4) * 1, 1, '-', (mx - 2));
-		mvhline((my / 4) * 2, 1, '-', (mx - 2));
-		mvhline((my / 4) * 3, 1, '-', (mx - 2));
-		mvvline(1, (mx / 4) * 1, '|', (my - 2));
-		mvvline(1, (mx / 4) * 2, '|', (my - 2));
-		mvvline(1, (mx / 4) * 3, '|', (my - 2));
+		mvhline((win.my / 4) * 1, 1, '-', (win.mx - 2));
+		mvhline((win.my / 4) * 2, 1, '-', (win.mx - 2));
+		mvhline((win.my / 4) * 3, 1, '-', (win.mx - 2));
+		mvvline(1, (win.mx / 4) * 1, '|', (win.my - 2));
+		mvvline(1, (win.mx / 4) * 2, '|', (win.my - 2));
+		mvvline(1, (win.mx / 4) * 3, '|', (win.my - 2));
 
 
-//		print_tab(tab);
+		print_tab(tab);
 		if (ch == 27)
 			ft_exit();
 //		mvprintw(10, 10,"|%d|", ch);

@@ -16,4 +16,12 @@
 
 #include "libft.h"
 
+typedef struct	s_win
+{
+	int			lastx;
+	int			lasty;
+	int			mx;
+	int			my;
+}				t_win;
+
 #endif

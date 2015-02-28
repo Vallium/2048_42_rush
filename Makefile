@@ -38,8 +38,9 @@ STATIC_DIR	= static
 LIBFT_STATIC= libft/libft.a
 LIBFT_DEBUG	= libft/libft_debug.a
 LIBFT_HEAD	= libft/includes/
+CURSES		=  -lcurses
 
-CC			= gcc -lcurses
+CC			= gcc
 NORMINETTE	= ~/project/colorminette/colorminette
 
 $(shell mkdir -p $(STATIC_DIR) $(DEBUG_DIR))
@@ -49,11 +50,11 @@ all: $(STATIC_EXE)
 debug: $(DEBUG_EXE)
 
 $(DEBUG_EXE): $(DEBUG_OBJ) $(LIBFT_DEBUG)
-	$(CC) -I $(HEAD_DIR) -I $(LIBFT_HEAD) -o $(DEBUG_EXE) $(DEBUG_OBJ) $(LIBFT_DEBUG) $(FLAGS) -g
+	$(CC) -I $(HEAD_DIR) -I $(LIBFT_HEAD) $(DEBUG_OBJ) $(LIBFT_DEBUG) -o $(DEBUG_EXE) $(FLAGS) $(CURSES) -g
 	@echo "\n\033[32mCompilation complete. (debug)\033[39m\n"
 
 $(STATIC_EXE): $(STATIC_OBJ) $(LIBFT_STATIC)
-	$(CC) -O3 -I $(HEAD_DIR) -I $(LIBFT_HEAD) -o $@ $(STATIC_OBJ) $(LIBFT_STATIC) $(FLAGS)
+	$(CC) -O3 -I $(HEAD_DIR) -I $(LIBFT_HEAD) $(STATIC_OBJ) $(LIBFT_STATIC) -o $@ $(CURSES) $(FLAGS)
 	@echo "\n\033[32mCompilation complete. (realease)\n\033[39m"
 
 $(STATIC_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT)

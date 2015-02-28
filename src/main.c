@@ -209,13 +209,31 @@ void	grid_responsive(WINDOW *scr, t_win *win)
 	mvvline(1, (win->mx / 4) * 3, '|', (win->my - 2));
 }
 
-int		pop_number(void)
+int		rand_number(void)
 {
 	int		nb;
 
 	srand(time(NULL));
 	nb = rand() % 100 >= 90 ? 4 : 2;
 	return (nb);
+}
+
+void	pop_number(int tab[4][4])
+{
+	int		x;
+	int		y;
+
+	srand(time(NULL));
+	while (42)
+	{
+		x = rand() % 4;
+		y = rand() % 4;
+		if (!tab[y][x])
+		{
+			tab[y][x] = rand_number();
+			return ;
+		}
+	}
 }
 
 void	grid_init(int tab[4][4])
@@ -232,7 +250,7 @@ void	grid_init(int tab[4][4])
 		y = rand() % 4;
 		if (!tab[y][x])
 		{
-			tab[y][x] = pop_number();
+			tab[y][x] = rand_number();
 			i++;
 		}
 	}
@@ -262,13 +280,13 @@ int		main(void)
 		if (ch == 27)
 			ft_exit();
 		else if (ch == 259)
-			move_up(tab);
+			move_up(tab), pop_number(tab);
 		else if (ch == 258)
-			move_down(tab);
+			move_down(tab), pop_number(tab);
 		else if (ch == 261)
-			move_right(tab);
+			move_right(tab), pop_number(tab);
 		else if (ch == 260)
-			move_left(tab);
+			move_left(tab), pop_number(tab);
 //		mvprintw(10, 10,"|%d|", ch);
 		wclear(stdscr);
 		refresh();

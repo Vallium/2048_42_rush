@@ -18,7 +18,7 @@ void	ft_exit(int ind)
 	if (ind == 1)
 		ft_putendl_fd("exit", 1);
 	if (ind == 2)
-		ft_putendl_fd("window too small, program quited", 2);
+		ft_putendl_fd("YOU ARE A HUSS PLAYER! Program quited", 2);
 	exit(0);
 }
 
@@ -60,6 +60,25 @@ int		grid_cmp(int tab[4][4], int tab2[4][4])
 	return (1);
 }
 
+void	grid_check(int tab[4][4])
+{
+	int		nxt_tab[4][4];
+
+	grid_cpy(tab, nxt_tab);
+	if (grid_move(nxt_tab, move_up))
+		pop_number(nxt_tab);
+	if (grid_move(nxt_tab, move_down))
+		pop_number(nxt_tab);
+	if (grid_move(nxt_tab, move_right))
+		pop_number(nxt_tab);
+	if (grid_move(nxt_tab, move_left))
+		pop_number(nxt_tab);
+	if (grid_cmp(tab, nxt_tab))
+	{
+		ft_exit(2);
+	}
+}
+
 int		grid_move(int tab[4][4], void (*f)(int[4][4]))
 {
 	int		oldtab[4][4];
@@ -79,6 +98,8 @@ void	print_tab(int tab[4][4], t_win *win)
 
 	y = 0;
 	py = 1;
+	if (win->mx < 46 || win->my < 25)
+		return ;
 	while (py < 8)
 	{
 		x = 0;
@@ -127,8 +148,8 @@ int		main(void)
 	getmaxyx(stdscr, win.my, win.mx);
 	while(42)
 	{
+		grid_check(tab);
 		grid_responsive(stdscr, &win);
-
 		print_tab(tab, &win);
 		ch = getch();
 		if (ch == 27)

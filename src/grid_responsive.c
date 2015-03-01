@@ -14,6 +14,7 @@
 
 void	grid_responsive(WINDOW *scr, t_win *win)
 {
+	bkgd(COLOR_PAIR(1));
 	win->lastx = win->mx;
 	win->lasty = win->my;
 	getmaxyx(scr, win->my, win->mx);
@@ -28,4 +29,5 @@ void	grid_responsive(WINDOW *scr, t_win *win)
 	mvvline(1, (win->mx / 4) * 1, '|', (win->my - 2));
 	mvvline(1, (win->mx / 4) * 2, '|', (win->my - 2));
 	mvvline(1, (win->mx / 4) * 3, '|', (win->my - 2));
+	attron(COLOR_PAIR(2));
 }

@@ -12,7 +12,16 @@
 
 #include "game.h"
 
-void	grid_init(int tab[4][4])
+static int		rand_number_ini(void)
+{
+	int		nb;
+
+	srand(time(NULL));
+	nb = rand() % 100 >= 70 ? 4 : 2;
+	return (nb);
+}
+
+void			grid_init(int tab[4][4])
 {
 	int		x;
 	int		y;

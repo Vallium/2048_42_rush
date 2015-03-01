@@ -28,7 +28,6 @@ SRC		=	main.c				\
 			move_up.c			\
 			pop_number.c		\
 			print_tab.c			\
-			rand_number_ini.c	\
 			rand_number.c
 
 UNAME_S := $(shell uname -s)

@@ -21,7 +21,7 @@
 
 typedef enum	e_const
 {
-	WIN_VALUE = 2048
+	WIN_VALUE = 16
 }				t_const;
 
 typedef struct	s_print
@@ -57,7 +57,6 @@ void			move_down(int tab[4][4]);
 
 int				rand_number(void);
 void			pop_number(int tab[4][4]);
-int				rand_number_ini(void);
 void			grid_init(int tab[4][4]);
 void			grid_check(int tab[4][4]);
 

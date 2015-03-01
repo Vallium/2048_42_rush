@@ -14,6 +14,7 @@
 
 void	ft_exit(int ind)
 {
+	attroff(COLOR_PAIR(2));
 	endwin();
 	if (ind == 1)
 		ft_putendl_fd("exit", 1);
@@ -21,5 +22,7 @@ void	ft_exit(int ind)
 		ft_putendl_fd("YOU ARE A HUSS PLAYER! Program quited", 2);
 	else if (ind == 3)
 		ft_putendl_fd("You just tried a too small window BITCH!", 2);
+	else if (ind == 4)
+		ft_putendl_fd("Change terminal MO - FO!", 2);
 	exit(0);
 }

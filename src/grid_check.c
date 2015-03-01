@@ -26,7 +26,5 @@ void	grid_check(int tab[4][4])
 	if (grid_move(nxt_tab, move_left))
 		pop_number(nxt_tab);
 	if (grid_cmp(tab, nxt_tab))
-	{
 		ft_exit(2);
-	}
 }

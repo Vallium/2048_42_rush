@@ -83,6 +83,5 @@ int				main(void)
 			continue ;
 		get_ch(tab);
 	}
-	endwin();
 	return (0);
 }

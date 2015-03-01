@@ -41,7 +41,7 @@ void			ft_exit(int ind);
 void			grid_cpy(int src[4][4], int dst[4][4]);
 int				grid_cmp(int tab[4][4], int tab2[4][4]);
 int				grid_move(int tab[4][4], void (*f)(int[4][4]));
-void			print_tab(int tab[4][4], t_win *win);
+int				print_tab(int tab[4][4], t_win *win);
 
 void			move_r(int tab[4][4], int y);
 void			move_l(int tab[4][4], int y);

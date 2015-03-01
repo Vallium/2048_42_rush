@@ -17,8 +17,10 @@ void	ft_exit(int ind)
 	endwin();
 	if (ind == 1)
 		ft_putendl_fd("exit", 1);
-	if (ind == 2)
+	else if (ind == 2)
 		ft_putendl_fd("YOU ARE A HUSS PLAYER! Program quited", 2);
+	else if (ind == 3)
+		ft_putendl_fd("You just tried a too small window BITCH!", 2);
 	exit(0);
 }
 
@@ -88,9 +90,8 @@ int		grid_move(int tab[4][4], void (*f)(int[4][4]))
 	return (grid_cmp(tab, oldtab) ? 0 : 1);
 }
 
-void	print_tab(int tab[4][4], t_win *win)
+int		print_tab(int tab[4][4], t_win *win)
 {
-//	WINDOW	*popup;
 	int		x;
 	int		y;
 	int		px;
@@ -99,7 +100,7 @@ void	print_tab(int tab[4][4], t_win *win)
 	y = 0;
 	py = 1;
 	if (win->mx < 46 || win->my < 25)
-		return ;
+		return (0);
 	while (py < 8)
 	{
 		x = 0;
@@ -110,12 +111,15 @@ void	print_tab(int tab[4][4], t_win *win)
 				mvprintw((win->my / 8) * py, (win->mx / 8) * px, "%d", tab[y][x]);
 			if (win->boul && tab[y][x] == WIN_VALUE)
 			{
-//				popup = newwin(10, 10, 10, 10);
-//				box(popup, '&', '&');
-//				wprintw(popup, "Gagne");
-				mvprintw(10, 10, "gagne");
+				wclear(stdscr);
+				box(stdscr, '#', '#');
+				mvprintw((win->my / 2) - 3, (win->mx / 2) - 8, "CONGRATULATIONS");
+				mvprintw((win->my / 2) , (win->mx / 2) - 11, "You got the 2048 tile!");
+				mvprintw((win->my / 2) + 3, (win->mx / 2) - 13, "Press any key to continue.");
+				while (!getch())
+					;
 				win->boul = 0;
-//				delwin(popup);
+				return (0);
 			}
 			px += 2;
 			x++;
@@ -123,6 +127,7 @@ void	print_tab(int tab[4][4], t_win *win)
 		py += 2;
 		y++;
 	}
+	return (1);
 }
 
 int		main(void)
@@ -136,7 +141,7 @@ int		main(void)
 							{0, 0, 0, 0}};
 
 	win.boul = 1;
-	if ((WIN_VALUE & (WIN_VALUE - 1)))
+	if (!WIN_VALUE || (WIN_VALUE & (WIN_VALUE - 1)))
 	{
 		ft_putnbr(WIN_VALUE);
 		ft_putendl_fd(" is not a power of two\n", 2);
@@ -148,9 +153,11 @@ int		main(void)
 	getmaxyx(stdscr, win.my, win.mx);
 	while(42)
 	{
+		wclear(stdscr);
 		grid_check(tab);
 		grid_responsive(stdscr, &win);
-		print_tab(tab, &win);
+		if (!print_tab(tab, &win))
+			continue ;
 		ch = getch();
 		if (ch == 27)
 			ft_exit(1);
@@ -174,7 +181,7 @@ int		main(void)
 			if (grid_move(tab, move_left))
 				pop_number(tab);
 		}
-		wclear(stdscr);
+
 		refresh();
 	}
 

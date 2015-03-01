@@ -17,11 +17,7 @@ void	grid_responsive(WINDOW *scr, t_win *win)
 	if (win->lastx != win->mx || win->lasty != win->my)
 		wclear(scr);
 	if (win->mx < 46 || win->my < 25)
-	{
-		wclear(scr);
-		mvprintw(win->my / 2, (win->mx / 2) - 3, "RESIZE");
-		return ;
-	}
+		ft_exit(3);
 	mvhline((win->my / 4) * 1, 1, '-', (win->mx - 2));
 	mvhline((win->my / 4) * 2, 1, '-', (win->mx - 2));
 	mvhline((win->my / 4) * 3, 1, '-', (win->mx - 2));

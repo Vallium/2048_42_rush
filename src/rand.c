@@ -13,31 +13,49 @@ void	pop_number(int tab[4][4])
 {
 	int		x;
 	int		y;
-	int		rd;
 
 	srand(time(NULL));
-	rd = rand() % 20;
 	while (42)
 	{
-		y = 0;
-		while (y < 4)
+		x = rand() % 4;
+		y = rand() % 4;
+		if (!tab[y][x])
 		{
-			x = 0;
-			while (x < 4)
-			{
-				if (!tab[y][x])
-					rd--;
-				if(!rd)
-				{
-					tab[y][x] = rand_number();
-					return ;
-				}
-				x++;
-			}
-			y++;
+			tab[y][x] = rand_number();
+			return ;
 		}
 	}
 }
+
+//void	pop_number(int tab[4][4])
+//{
+//	int		x;
+//	int		y;
+//	int		rd;
+//
+//	srand(time(NULL));
+//	rd = rand() % 16;
+//	while (42)
+//	{
+//		y = 0;
+//		while (y < 4)
+//		{
+//			x = 0;
+//			while (x < 4)
+//			{
+//				if (!tab[y][x])
+//					rd--;
+//				if(!rd)
+//				{
+//					tab[y][x] = rand_number();
+//					return ;
+//				}
+//				x++;
+//			}
+//			y++;
+//		}
+//	}
+//}
 
 int		rand_number_ini(void)
 {

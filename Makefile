@@ -38,8 +38,8 @@ STATIC_DIR	= static
 LIBFT_STATIC= libft/libft.a
 LIBFT_DEBUG	= libft/libft_debug.a
 LIBFT_HEAD	= libft/includes/
-CURSES		=  -lcurses
 
+CURSES		= -lcurses
 CC			= gcc
 NORMINETTE	= ~/project/colorminette/colorminette
 

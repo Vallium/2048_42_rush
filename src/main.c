@@ -15,10 +15,13 @@
 #include <curses.h>
 #include <game.h>
 
-void	ft_exit()
+void	ft_exit(int ind)
 {
-	endwin();/*Curses close*/
-	ft_putendl_fd("exit", 2);
+	endwin();
+	if (ind == 1)
+		ft_putendl_fd("exit", 1);
+	if (ind == 2)
+		ft_putendl_fd("window too small, program quited", 2);
 	exit(0);
 }
 
@@ -217,6 +220,7 @@ int		grid_move(int tab[4][4], void (*f)(int[4][4]))
 
 void	print_tab(int tab[4][4], t_win *win)
 {
+//	WINDOW	*popup;
 	int		x;
 	int		y;
 	int		px;
@@ -232,6 +236,15 @@ void	print_tab(int tab[4][4], t_win *win)
 		{
 			if (tab[y][x])
 				mvprintw((win->my / 8) * py, (win->mx / 8) * px, "%d", tab[y][x]);
+			if (win->boul && tab[y][x] == WIN_VALUE)
+			{
+//				popup = newwin(10, 10, 10, 10);
+//				box(popup, '&', '&');
+//				wprintw(popup, "Gagne");
+				mvprintw(10, 10, "gagne");
+				win->boul = 0;
+//				delwin(popup);
+			}
 			px += 2;
 			x++;
 		}
@@ -248,24 +261,6 @@ int		rand_number(void)
 	nb = rand() % 100 >= 90 ? 4 : 2;
 	return (nb);
 }
-
-//void	pop_num(int tab[4][4])
-//{
-//	int		x;
-//	int		y;
-//
-//	srand(time(NULL));
-//	while (42)
-//	{
-//		x = rand() % 4;
-//		y = rand() % 4;
-//		if (!tab[y][x])
-//		{
-//			tab[y][x] = rand_number();
-//			return ;
-//		}
-//	}
-//}
 
 void	pop_number(int tab[4][4])
 {
@@ -297,38 +292,34 @@ void	pop_number(int tab[4][4])
 	}
 }
 
+int		rand_number_ini(void)
+{
+	int		nb;
+
+	srand(time(NULL));
+	nb = rand() % 100 >= 70 ? 4 : 2;
+	return (nb);
+}
+
 void	grid_init(int tab[4][4])
 {
-	int		i;
 	int		x;
 	int		y;
 
 	srand(time(NULL));
-	i = 0;
-	while (i < 2)
+	x = rand() % 4;
+	y = rand() % 4;
+	tab[y][x] = rand_number_ini();
+	while (42)
 	{
 		x = rand() % 4;
 		y = rand() % 4;
 		if (!tab[y][x])
 		{
-			tab[y][x] = rand_number();
-			i++;
+			tab[y][x] = 2;
+			return ;
 		}
 	}
-}
-
-void draw_menubar(WINDOW *menubar)
-{
-    wbkgd(menubar,COLOR_PAIR(2));
-    waddstr(menubar,"Menu1");
-    wattron(menubar,COLOR_PAIR(3));
-    waddstr(menubar,"(F1)");
-    wattroff(menubar,COLOR_PAIR(3));
-    wmove(menubar,0,20);
-    waddstr(menubar,"Menu2");
-    wattron(menubar,COLOR_PAIR(3));
-    waddstr(menubar,"(F2)");
-    wattroff(menubar,COLOR_PAIR(3));
 }
 
 void	init_curses()
@@ -348,9 +339,11 @@ void	grid_responsive(WINDOW *scr, t_win *win)
 	win->lasty = win->my;
 	getmaxyx(scr, win->my, win->mx);
 	box(scr, 0, 0);
-	if(win->lastx != win->mx || win->lasty != win->my)
+	if (win->lastx != win->mx || win->lasty != win->my)
 		wclear(scr);
-	mvhline((win->my / 4) * 1, 0, '-', (win->mx - 2));
+	if (win->mx < 46 || win->my < 25)
+		ft_exit(2);
+	mvhline((win->my / 4) * 1, 1, '-', (win->mx - 2));
 	mvhline((win->my / 4) * 2, 1, '-', (win->mx - 2));
 	mvhline((win->my / 4) * 3, 1, '-', (win->mx - 2));
 	mvvline(1, (win->mx / 4) * 1, '|', (win->my - 2));
@@ -360,7 +353,6 @@ void	grid_responsive(WINDOW *scr, t_win *win)
 
 int		main(void)
 {
-//	WINDOW	*menubar;
 	int		ch;
 	t_win	win;
 
@@ -369,8 +361,14 @@ int		main(void)
 							{0, 0, 0, 0},
 							{0, 0, 0, 0}};
 
+	win.boul = 1;
+	if ((WIN_VALUE & (WIN_VALUE - 1)))
+	{
+		ft_putnbr(WIN_VALUE);
+		ft_putendl_fd(" is not a power of two\n", 2);
+		return (0);
+	}
 	init_curses();
-//	menubar=subwin(stdscr,1,80,0,0);
 	grid_init(tab);
 //	signal(SIGINT, SIG_IGN);
 	getmaxyx(stdscr, win.my, win.mx);
@@ -381,7 +379,7 @@ int		main(void)
 		print_tab(tab, &win);
 		ch = getch();
 		if (ch == 27)
-			ft_exit();
+			ft_exit(1);
 		else if (ch == 259)
 		{
 			if (grid_move(tab, move_up))

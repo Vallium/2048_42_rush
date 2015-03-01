@@ -21,7 +21,7 @@
 
 typedef enum	e_const
 {
-	WIN_VALUE = 16
+	WIN_VALUE = 2048
 }				t_const;
 
 typedef struct	s_print

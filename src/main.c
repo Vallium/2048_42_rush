@@ -64,7 +64,7 @@ int				main(void)
 	t_win	win;
 	int		tab[4][4];
 
-	if (!WIN_VALUE || (WIN_VALUE & (WIN_VALUE - 1)))
+	if (WIN_VALUE <= 0|| (WIN_VALUE & (WIN_VALUE - 1)))
 	{
 		ft_putnbr(WIN_VALUE);
 		ft_putendl_fd(" is not a power of two\n", 2);

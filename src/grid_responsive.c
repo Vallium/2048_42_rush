@@ -1,13 +1,5 @@
 #include "game.h"
 
-void	init_curses()
-{
-	initscr();
-	start_color();
-	keypad(stdscr, true);
-	curs_set(0);
-}
-
 void	grid_responsive(WINDOW *scr, t_win *win)
 {
 	win->lastx = win->mx;

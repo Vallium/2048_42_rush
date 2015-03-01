@@ -13,7 +13,11 @@
 STATIC_EXE	= game_2048
 DEBUG_EXE	= game_2048_debug
 
-SRC		=	main.c
+SRC		=	main.c		\
+			init.c		\
+			move_x.c	\
+			move_y.c	\
+			rand.c
 
 UNAME_S := $(shell uname -s)
 

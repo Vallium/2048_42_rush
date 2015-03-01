@@ -24,6 +24,14 @@ typedef enum	e_const
 	WIN_VALUE = 2048
 }				t_const;
 
+typedef struct	s_print
+{
+	int			x;
+	int			y;
+	int			px;
+	int			py;
+}				t_print;
+
 typedef struct	s_win
 {
 	int			lastx;
@@ -33,7 +41,7 @@ typedef struct	s_win
 	int			boul;
 }				t_win;
 
-void			init_curses();
+void			init_curses(t_win *win);
 void			grid_responsive(WINDOW *scr, t_win *win);
 
 void			ft_exit(int ind);

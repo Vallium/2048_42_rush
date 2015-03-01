@@ -12,61 +12,77 @@
 
 #include "game.h"
 
-int		main(void)
+static void		fill_tab_zero(int tab[4][4])
+{
+	int		x;
+	int		y;
+
+	y = 0;
+	while (y < 4)
+	{
+		x = 0;
+		while (x < 4)
+		{
+			tab[y][x] = 0;
+			x++;
+		}
+		y++;
+	}
+}
+
+static void		get_ch(int tab[4][4])
 {
 	int		ch;
+
+	ch = getch();
+	if (ch == 27)
+		ft_exit(1);
+	else if (ch == 259)
+	{
+		if (grid_move(tab, move_up))
+			pop_number(tab);
+	}
+	else if (ch == 258)
+	{
+		if (grid_move(tab, move_down))
+			pop_number(tab);
+	}
+	else if (ch == 261)
+	{
+		if (grid_move(tab, move_right))
+			pop_number(tab);
+	}
+	else if (ch == 260)
+	{
+		if (grid_move(tab, move_left))
+			pop_number(tab);
+	}
+}
+
+int				main(void)
+{
 	t_win	win;
+	int		tab[4][4];
 
-	int		tab[4][4] = {	{0, 0, 0, 0},
-							{0, 0, 0, 0},
-							{0, 0, 0, 0},
-							{0, 0, 0, 0}};
-
-	win.boul = 1;
 	if (!WIN_VALUE || (WIN_VALUE & (WIN_VALUE - 1)))
 	{
 		ft_putnbr(WIN_VALUE);
 		ft_putendl_fd(" is not a power of two\n", 2);
 		return (0);
 	}
-	init_curses();
+	fill_tab_zero(tab);
+	init_curses(&win);
 	grid_init(tab);
-//	signal(SIGINT, SIG_IGN);
 	getmaxyx(stdscr, win.my, win.mx);
-	while(42)
+	while (42)
 	{
 		wclear(stdscr);
 		grid_check(tab);
 		grid_responsive(stdscr, &win);
 		if (!print_tab(tab, &win))
 			continue ;
-		ch = getch();
-		if (ch == 27)
-			ft_exit(1);
-		else if (ch == 259)
-		{
-			if (grid_move(tab, move_up))
-				pop_number(tab);
-		}
-		else if (ch == 258)
-		{
-			if (grid_move(tab, move_down))
-				pop_number(tab);
-		}
-		else if (ch == 261)
-		{
-			if (grid_move(tab, move_right))
-				pop_number(tab);
-		}
-		else if (ch == 260)
-		{
-			if (grid_move(tab, move_left))
-				pop_number(tab);
-		}
-
-		refresh();
+		get_ch(tab);
 	}
-
 	endwin();
 	return (0);
 }

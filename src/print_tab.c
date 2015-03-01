@@ -12,42 +12,44 @@
 
 #include "game.h"
 
-int		print_tab(int tab[4][4], t_win *win)
+static int		print_win(t_win *win)
 {
-	int		x;
-	int		y;
-	int		px;
-	int		py;
+	wclear(stdscr);
+	box(stdscr, '#', '#');
+	mvprintw((win->my / 2) - 3, (win->mx / 2) - 8, "CONGRATULATIONS");
+	mvprintw((win->my / 2), (win->mx / 2) - 11, "You got the 2048 tile!");
+	mvprintw((win->my / 2) + 3, (win->mx / 2) - 13,
+			"Press any key to continue.");
+	while (!getch())
+		;
+	win->boul = 0;
+	return (0);
+}
 
-	y = 0;
-	py = 1;
+int				print_tab(int tab[4][4], t_win *win)
+{
+	t_print		print;
+
+	print.y = 0;
+	print.py = 1;
 	if (win->mx < 46 || win->my < 25)
 		return (0);
-	while (py < 8)
+	while (print.py < 8)
 	{
-		x = 0;
-		px = 1;
-		while (px < 8)
+		print.x = 0;
+		print.px = 1;
+		while (print.px < 8)
 		{
-			if (tab[y][x])
-				mvprintw((win->my / 8) * py, (win->mx / 8) * px, "%d", tab[y][x]);
-			if (win->boul && tab[y][x] == WIN_VALUE)
-			{
-				wclear(stdscr);
-				box(stdscr, '#', '#');
-				mvprintw((win->my / 2) - 3, (win->mx / 2) - 8, "CONGRATULATIONS");
-				mvprintw((win->my / 2) , (win->mx / 2) - 11, "You got the 2048 tile!");
-				mvprintw((win->my / 2) + 3, (win->mx / 2) - 13, "Press any key to continue.");
-				while (!getch())
-					;
-				win->boul = 0;
-				return (0);
-			}
-			px += 2;
-			x++;
+			if (tab[print.y][print.x])
+				mvprintw((win->my / 8) * print.py, (win->mx / 8) * print.px,
+						"%d", tab[print.y][print.x]);
+			if (win->boul && tab[print.y][print.x] == WIN_VALUE)
+				return (print_win(win));
+			print.px += 2;
+			print.x++;
 		}
-		py += 2;
-		y++;
+		print.py += 2;
+		print.y++;
 	}
 	return (1);
 }

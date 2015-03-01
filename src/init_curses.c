@@ -12,10 +12,12 @@
 
 #include "game.h"
 
-void	init_curses(void)
+void	init_curses(t_win *win)
 {
+	win->boul = 1;
 	initscr();
 	start_color();
 	keypad(stdscr, true);
 	curs_set(0);
+	signal(SIGINT, SIG_IGN);
 }

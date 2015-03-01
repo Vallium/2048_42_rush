@@ -13,11 +13,23 @@
 STATIC_EXE	= game_2048
 DEBUG_EXE	= game_2048_debug
 
-SRC		=	main.c		\
-			init.c		\
-			move_x.c	\
-			move_y.c	\
-			rand.c
+SRC		=	main.c				\
+			ft_exit.c			\
+			grid_check.c		\
+			grid_cmp.c			\
+			grid_cpy.c			\
+			grid_init.c			\
+			grid_move.c			\
+			grid_responsive.c	\
+			init_curses.c		\
+			move_down.c			\
+			move_left.c			\
+			move_right.c		\
+			move_up.c			\
+			pop_number.c		\
+			print_tab.c			\
+			rand_number_ini.c	\
+			rand_number.c
 
 UNAME_S := $(shell uname -s)
 

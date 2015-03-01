@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "game.h"
+
 void	pop_number(int tab[4][4])
 {
 	int		x;
@@ -20,11 +22,11 @@ void	pop_number(int tab[4][4])
 	rd = rand() % 20;
 	while (42)
 	{
-		y = 0;
-		while (y < 4)
+		y = -1;
+		while (++y < 4)
 		{
-			x = 0;
-			while (x < 4)
+			x = -1;
+			while (++x < 4)
 			{
 				if (!tab[y][x])
 					rd--;
@@ -33,9 +35,7 @@ void	pop_number(int tab[4][4])
 					tab[y][x] = rand_number();
 					return ;
 				}
-				x++;
 			}
-			y++;
 		}
 	}
 }

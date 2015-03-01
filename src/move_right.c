@@ -10,18 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-void	move_right(int tab[4][4])
+static void		move_r(int tab[4][4], int y)
 {
-	int x;
-	int y;
+	int		x;
+
+	x = 3;
+	while (--x > -1)
+		if (tab[y][x + 1] == 0)
+		{
+			tab[y][x + 1] = tab[y][x];
+			tab[y][x] = 0;
+		}
+}
+
+void			move_right(int tab[4][4])
+{
+	int		x;
+	int		y;
 
 	y = -1;
 	while (++y < 4)
 	{
 		x = 4;
 		while (--x > -1)
-			if (x > 2 && tab[y][x - 1] == 0 && tab[y][x - 2] == 0 && tab[y][x]
-					== tab[y][x - 3])
+			if (x > 2 && tab[y][x - 1] == 0 && tab[y][x - 2] == 0 &&
+					tab[y][x] == tab[y][x - 3])
 				tab[y][x] *= 2, tab[y][x - 3] = 0;
 			else if (x > 1 && tab[y][x - 1] == 0 && tab[y][x] == tab[y][x - 2])
 				tab[y][x] *= 2, tab[y][x - 2] = 0;

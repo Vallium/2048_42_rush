@@ -11,18 +11,17 @@
 /* ************************************************************************** */
 
 #ifndef GAME_H
-
 # define GAME_H
 
-#include "libft.h"
-#include <time.h>
-#include <stdlib.h>
-#include <curses.h>
-#include <game.h>
+# include "libft.h"
+# include <time.h>
+# include <stdlib.h>
+# include <curses.h>
+# include <game.h>
 
 typedef enum	e_const
 {
-	WIN_VALUE = 16
+	WIN_VALUE = 2048
 }				t_const;
 
 typedef struct	s_win
@@ -43,13 +42,8 @@ int				grid_cmp(int tab[4][4], int tab2[4][4]);
 int				grid_move(int tab[4][4], void (*f)(int[4][4]));
 int				print_tab(int tab[4][4], t_win *win);
 
-void			move_r(int tab[4][4], int y);
-void			move_l(int tab[4][4], int y);
 void			move_left(int tab[4][4]);
 void			move_right(int tab[4][4]);
-
-void			move_u(int tab[4][4], int x);
-void			move_d(int tab[4][4], int x);
 void			move_up(int tab[4][4]);
 void			move_down(int tab[4][4]);
 
@@ -57,5 +51,6 @@ int				rand_number(void);
 void			pop_number(int tab[4][4]);
 int				rand_number_ini(void);
 void			grid_init(int tab[4][4]);
+void			grid_check(int tab[4][4]);
 
 #endif

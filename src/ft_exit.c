@@ -14,7 +14,9 @@
 
 void	ft_exit(int ind)
 {
+	attroff(COLOR_PAIR(1));
 	attroff(COLOR_PAIR(2));
+	attroff(COLOR_PAIR(3));
 	endwin();
 	if (ind == 1)
 		ft_putendl_fd("exit", 1);

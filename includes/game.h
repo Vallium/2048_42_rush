@@ -18,7 +18,6 @@
 # include <stdlib.h>
 # include <curses.h>
 # include <game.h>
-# include <signal.h>
 
 typedef enum	e_const
 {

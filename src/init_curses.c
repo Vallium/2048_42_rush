@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "game.h"
+#include <signal.h>
 
 static void		init_colors(void)
 {
